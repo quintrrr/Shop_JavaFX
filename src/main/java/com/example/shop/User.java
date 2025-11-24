@@ -30,26 +30,27 @@ public class User {
         this.login = login;
     }
 
-    public Boolean Compare(){
+    public String loginUser(){
         String filePath = "users.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     String fileLogin = parts[0].trim();
                     String filePassword = parts[1].trim();
+                    String fileRole = parts[2].trim();
 
                     if (fileLogin.equals(login) && filePassword.equals(password)) {
-                        return true;
+                        return fileRole;
                     }
                 }
             }
         } catch (IOException e) {
             System.err.println("Ошибка при чтении файла: " + e.getMessage());
         }
-        return false;
+        return null;
     }
 
     public Boolean IsRegistered() {
@@ -59,7 +60,7 @@ public class User {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     String fileLogin = parts[0].trim();
 
                     if (fileLogin.equals(login)) {
@@ -77,7 +78,7 @@ public class User {
         String filePath = "users.txt";
 
         try (FileWriter writer = new FileWriter(filePath, true)) {
-            writer.write( login + ";" + password + "\n" );
+            writer.write( login + ";" + password + ";" + "user" + "\n" );
         } catch (IOException e) {
             System.err.println("Ошибка при добавлении пользователя: " + e.getMessage());
         }

@@ -1,2 +1,7 @@
-admin;password
-qwerty;ffdvvffv
+admin;password;admin
+qwerty;qwerty;user
+ivanov;ivan123;user
+petrova;petra321;user
+tester;test123;user
+guest;guest;user
+manager;manager1;user

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CatalogController implements Initializable, ChangeListener {
-    private final ObservableList<Product> productData = FXCollections.observableArrayList();
+    private ObservableList<Product> productData;
 
     @FXML
     private TableView<Product> catalogTable;
@@ -53,12 +53,16 @@ public class CatalogController implements Initializable, ChangeListener {
     private Label productCountLabel;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){
-        productData.add(new Product("Chair", 1, 2, 1500.0));
+    public void initialize(URL url, ResourceBundle rb) {
         productId.setCellValueFactory(new PropertyValueFactory<>("productId"));
         productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         productSum.setCellValueFactory(new PropertyValueFactory<>("productSum"));
         productCount.setCellValueFactory(new PropertyValueFactory<>("productCount"));
+
+        if (productData == null) {
+            productData = Product.loadProductsFromFile();
+        }
+
         catalogTable.setItems(productData);
 
         showProductDetails(null);
@@ -66,6 +70,12 @@ public class CatalogController implements Initializable, ChangeListener {
         catalogTable.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue)
                         -> showProductDetails(newValue));
+
+    }
+
+    public void setProductData(ObservableList<Product> productData){
+        this.productData = productData;
+        catalogTable.setItems(productData);
     }
 
     private void showProductDetails(Product product) {

@@ -31,12 +31,16 @@ public class HelloController {
     @FXML
     protected void handleLoginButton() {
         User user = new User(textFieldLogin.getText(), textFieldPassword.getText());
+        String role = user.loginUser();
 
-        if (user.Compare()) {
-            NavigateToCatalog();
-        }
-        else {
+        if (role == null) {
             labelCompareResult.setText("Неверный логин или пароль");
+            return;
+        }
+        if (role.equals("admin")){
+            NavigateToMainMenu();
+        } else {
+            NavigateToCatalog();
         }
     }
 
@@ -76,6 +80,22 @@ public class HelloController {
         stage.setTitle("Каталог");
         try {
             Parent root = FXMLLoader.load(getClass().getResource("catalog-view.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+            Stage stage1 = (Stage) buttonLogin.getScene().getWindow();
+            stage1.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void NavigateToMainMenu() {
+        Stage stage = new Stage();
+        stage.setTitle("Главное меню");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("mainMenu-view.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
